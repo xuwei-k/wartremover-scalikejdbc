@@ -1,0 +1,29 @@
+language: scala
+sudo: false
+jdk:
+- oraclejdk8
+scala:
+- 2.11.12
+- 2.12.8
+- 2.13.0-M5
+matrix:
+  include:
+  - scala: 2.12.8
+    jdk: openjdk11
+script:
+- sbt "onFailure test:compile" "++ ${TRAVIS_SCALA_VERSION}" "test:compile"
+- sbt
+  "++ ${TRAVIS_SCALA_VERSION}"
+  "scalafmtCheck"
+  "test:scalafmtCheck"
+  "scalafmtSbtCheck"
+  "test"
+  "core/publishLocal"
+  $(if [[ "${TRAVIS_SCALA_VERSION}" == "2.12.8" ]]; then echo "tests/scripted"; fi)
+cache:
+  directories:
+  - "$HOME/.ivy2/cache"
+  - "$HOME/.sbt/launchers"
+before_cache:
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+- find $HOME/.ivy2/cache -name "*SNAPSHOT*" | xargs rm -rf
