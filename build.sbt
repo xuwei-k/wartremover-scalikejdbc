@@ -5,10 +5,10 @@ import sbtrelease.Git
 
 val Scala211 = "2.11.12"
 val Scala212 = "2.12.8"
-val Scala213 = "2.13.0-M5"
+val Scala213 = "2.13.0-RC1"
 
-val scalikejdbcVersion = "3.3.2"
-val wartremoverVersion = "2.4.0"
+val scalikejdbcVersion = "3.3.4"
+val wartremoverVersion = "2.4.1"
 
 val projectName = "wartremover-scalikejdbc"
 
