@@ -53,11 +53,15 @@ val tagOrHash = Def.setting {
 
 val unusedWarnings = Seq("-Ywarn-unused")
 
+val crossScalaVersionSettings = Def.settings(
+  crossScalaVersions := Seq(Scala211, Scala212, Scala213)
+)
+
 lazy val core = project
   .in(file("core"))
   .settings(
     name := projectName,
-    crossScalaVersions := Seq(Scala211, Scala212, Scala213),
+    crossScalaVersionSettings,
     libraryDependencies ++= Seq(
       "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion % "test",
       "com.novocode" % "junit-interface" % "0.11" % "test",
@@ -95,6 +99,7 @@ lazy val noPublish = Def.settings(
 
 noPublish
 commonSettings
+crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
   unmanagedResources in Compile += (baseDirectory in LocalRootProject).value / "LICENSE.txt",
