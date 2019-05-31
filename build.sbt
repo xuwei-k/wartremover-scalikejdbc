@@ -5,10 +5,10 @@ import sbtrelease.Git
 
 val Scala211 = "2.11.12"
 val Scala212 = "2.12.8"
-val Scala213 = "2.13.0-RC1"
+val Scala213 = "2.13.0-RC2"
 
-val scalikejdbcVersion = "3.3.4"
-val wartremoverVersion = "2.4.1"
+val scalikejdbcVersion = settingKey[String]("")
+val wartremoverVersion = "2.4.2"
 
 val projectName = "wartremover-scalikejdbc"
 
@@ -63,7 +63,7 @@ lazy val core = project
     name := projectName,
     crossScalaVersionSettings,
     libraryDependencies ++= Seq(
-      "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion % "test",
+      "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test",
       "com.novocode" % "junit-interface" % "0.11" % "test",
       "org.wartremover" %% "wartremover" % wartremoverVersion,
     ),
@@ -82,7 +82,7 @@ lazy val tests = project
       a => Seq("-Xmx", "-Xms", "-XX", "-Dsbt.log.noformat").exists(a.startsWith)
     ),
     scriptedLaunchOpts ++= Seq(
-      s"-Dscalikejdbc.version=${scalikejdbcVersion}",
+      s"-Dscalikejdbc.version=${scalikejdbcVersion.value}",
       s"-Dwartremover.version=${wartremoverVersion}",
       s"-Dwartremover-scalikejdbc.version=${version.value}"
     ),
@@ -102,6 +102,14 @@ commonSettings
 crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
+  scalikejdbcVersion := {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, v)) if v <= 12 =>
+        "3.3.4"
+      case _ =>
+        "3.4.0-RC1"
+    }
+  },
   unmanagedResources in Compile += (baseDirectory in LocalRootProject).value / "LICENSE.txt",
   scalaVersion := Scala212,
   scalacOptions ++= unusedWarnings,
