@@ -151,10 +151,8 @@ lazy val commonSettings = Def.settings(
   releaseTagName := tagName.value,
   releaseCrossBuild := true,
   releaseProcess := Seq[ReleaseStep](
-    checkSnapshotDependencies,
     inquireVersions,
     runClean,
-    runTest,
     setReleaseVersion,
     commitReleaseVersion,
     updateReadmeProcess,
