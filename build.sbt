@@ -5,7 +5,7 @@ import sbtrelease.Git
 
 val Scala211 = "2.11.12"
 val Scala212 = "2.12.8"
-val Scala213 = "2.13.0-RC2"
+val Scala213 = "2.13.0"
 
 val scalikejdbcVersion = settingKey[String]("")
 val wartremoverVersion = "2.4.2"
@@ -102,14 +102,7 @@ commonSettings
 crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
-  scalikejdbcVersion := {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v <= 12 =>
-        "3.3.4"
-      case _ =>
-        "3.4.0-RC1"
-    }
-  },
+  scalikejdbcVersion := "3.3.5",
   unmanagedResources in Compile += (baseDirectory in LocalRootProject).value / "LICENSE.txt",
   scalaVersion := Scala212,
   scalacOptions ++= unusedWarnings,
