@@ -4,11 +4,11 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
 
 val Scala211 = "2.11.12"
-val Scala212 = "2.12.8"
-val Scala213 = "2.13.0"
+val Scala212 = "2.12.10"
+val Scala213 = "2.13.1"
 
 val scalikejdbcVersion = settingKey[String]("")
-val wartremoverVersion = "2.4.2"
+val wartremoverVersion = "2.4.3"
 
 val projectName = "wartremover-scalikejdbc"
 
@@ -65,7 +65,7 @@ lazy val core = project
     libraryDependencies ++= Seq(
       "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test",
       "com.novocode" % "junit-interface" % "0.11" % "test",
-      "org.wartremover" %% "wartremover" % wartremoverVersion,
+      "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.full,
     ),
     commonSettings,
   )
