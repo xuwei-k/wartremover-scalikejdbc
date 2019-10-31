@@ -76,5 +76,4 @@ class ScalikejdbcDefaultZoneIdTest {
     }
     assert(result.errors.isEmpty, result)
   }
-
 }
