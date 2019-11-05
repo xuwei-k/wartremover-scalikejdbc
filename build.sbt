@@ -12,6 +12,8 @@ val wartremoverVersion = "2.4.3"
 
 val projectName = "wartremover-scalikejdbc"
 
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 val updateReadmeTask = { state: State =>
   val extracted = Project.extract(state)
   val v = extracted get version
