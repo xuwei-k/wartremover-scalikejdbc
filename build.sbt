@@ -80,9 +80,8 @@ lazy val tests = project
     noPublish,
     sbtTestDirectory := file("example"),
     scriptedBufferLog := false,
-    scriptedLaunchOpts ++= ManagementFactory.getRuntimeMXBean.getInputArguments.asScala.toList.filter(
-      a => Seq("-Xmx", "-Xms", "-XX", "-Dsbt.log.noformat").exists(a.startsWith)
-    ),
+    scriptedLaunchOpts ++= ManagementFactory.getRuntimeMXBean.getInputArguments.asScala.toList
+      .filter(a => Seq("-Xmx", "-Xms", "-XX", "-Dsbt.log.noformat").exists(a.startsWith)),
     scriptedLaunchOpts ++= Seq(
       s"-Dscalikejdbc.version=${scalikejdbcVersion.value}",
       s"-Dwartremover.version=${wartremoverVersion}",
