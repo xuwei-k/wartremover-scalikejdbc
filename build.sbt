@@ -3,9 +3,20 @@ import java.lang.management.ManagementFactory
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
 
-val Scala211 = "2.11.12"
-val Scala212 = "2.12.10"
-val Scala213 = "2.13.1"
+
+val scala211Versions = Seq("2.11.12")
+val scala212Versions = Seq("2.12.10", "2.12.11")
+val scala213Versions = Seq("2.13.0", "2.13.1")
+
+def latest(versions: Seq[String]) = {
+  val prefix = versions.head.split('.').init.mkString("", ".", ".")
+  assert(versions.forall(_ startsWith prefix))
+  prefix + versions.map(_.drop(prefix.length).toLong).max
+}
+
+val scala211Latest = latest(scala211Versions)
+val scala212Latest = latest(scala212Versions)
+val scala213Latest = latest(scala213Versions)
 
 val scalikejdbcVersion = settingKey[String]("")
 val wartremoverVersion = "2.4.7"
@@ -55,21 +66,36 @@ val tagOrHash = Def.setting {
 
 val unusedWarnings = Seq("-Ywarn-unused")
 
-val crossScalaVersionSettings = Def.settings(
-  crossScalaVersions := Seq(Scala211, Scala212, Scala213)
+lazy val coreSettings = Def.settings(
+  name := projectName,
+  libraryDependencies ++= Seq(
+    "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test",
+    "com.novocode" % "junit-interface" % "0.11" % "test"
+  ),
+  commonSettings,
 )
 
-lazy val core = project
+lazy val coreFull = project
   .in(file("core"))
   .settings(
-    name := projectName,
-    crossScalaVersionSettings,
-    libraryDependencies ++= Seq(
-      "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test",
-      "com.novocode" % "junit-interface" % "0.11" % "test",
-      "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.full,
-    ),
-    commonSettings,
+    coreSettings,
+    crossScalaVersions := Seq(scala211Versions, scala212Versions, scala213Versions).flatten,
+    crossVersion := CrossVersion.full,
+    libraryDependencies += "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.full,
+    crossTarget := {
+      // workaround for https://github.com/sbt/sbt/issues/5097
+      target.value / s"scala-${scalaVersion.value}"
+    },
+  )
+
+lazy val coreBinary = project
+  .in(file("core-binary"))
+  .settings(
+    coreSettings,
+    crossScalaVersions := Seq(scala211Latest, scala212Latest, scala213Latest),
+    libraryDependencies += "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.binary,
+    Compile / scalaSource := (coreFull / Compile / scalaSource).value,
+    crossVersion := CrossVersion.binary,
   )
 
 lazy val tests = project
@@ -100,12 +126,11 @@ lazy val noPublish = Def.settings(
 
 noPublish
 commonSettings
-crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
   scalikejdbcVersion := "3.4.1",
   unmanagedResources in Compile += (baseDirectory in LocalRootProject).value / "LICENSE.txt",
-  scalaVersion := Scala212,
+  scalaVersion := scala212Latest,
   scalacOptions ++= unusedWarnings,
   Seq(Compile, Test).flatMap(c => scalacOptions in (c, console) --= unusedWarnings),
   scalacOptions ++= Seq(

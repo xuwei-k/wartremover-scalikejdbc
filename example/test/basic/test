@@ -1,3 +1,5 @@
 > compile
+> set wartremoverCrossVersion := CrossVersion.binary
+> compile
 > writeTestFile1
 -> compile

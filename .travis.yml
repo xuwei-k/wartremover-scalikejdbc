@@ -2,24 +2,16 @@ language: scala
 sudo: false
 jdk:
 - openjdk8
-scala:
-- 2.11.12
-- 2.12.10
-- 2.13.1
-matrix:
-  include:
-  - scala: 2.12.10
-    jdk: openjdk11
+- openjdk11
 script:
-- sbt "onFailure test:compile" "++ ${TRAVIS_SCALA_VERSION}" "test:compile"
+- travis_retry sbt "onFailure +test:compile" "+test:compile"
 - sbt
-  "++ ${TRAVIS_SCALA_VERSION}"
   "scalafmtCheck"
   "test:scalafmtCheck"
   "scalafmtSbtCheck"
-  "test"
-  "core/publishLocal"
-  $(if [[ "${TRAVIS_SCALA_VERSION}" == "2.12.10" ]]; then echo "tests/scripted"; fi)
+  "+test"
+  "+publishLocal"
+  "tests/scripted"
 cache:
   directories:
   - "$HOME/.ivy2/cache"
