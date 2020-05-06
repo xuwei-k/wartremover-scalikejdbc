@@ -4,8 +4,8 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
 
 val Scala211 = "2.11.12"
-val Scala212 = "2.12.10"
-val Scala213 = "2.13.1"
+val Scala212 = "2.12.11"
+val Scala213 = "2.13.2"
 
 val scalikejdbcVersion = settingKey[String]("")
 val wartremoverVersion = "2.4.8"
