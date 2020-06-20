@@ -2,7 +2,8 @@ package scalikejdbc.warts
 
 import org.wartremover._
 
-/** avoid `ZoneId.systemDefault`
+/**
+ * avoid `ZoneId.systemDefault`
  *
  * [[https://github.com/scalikejdbc/scalikejdbc/blob/3.3.2/scalikejdbc-core/src/main/scala/scalikejdbc/TypeBinder.scala#L121-L125]]
  */
