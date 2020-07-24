@@ -3,9 +3,8 @@ import java.lang.management.ManagementFactory
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
 
-val Scala211 = "2.11.12"
-val Scala212 = "2.12.11"
-val Scala213 = "2.13.2"
+val Scala212 = "2.12.12"
+val Scala213 = "2.13.3"
 
 val scalikejdbcVersion = settingKey[String]("")
 val wartremoverVersion = "2.4.10"
@@ -56,7 +55,7 @@ val tagOrHash = Def.setting {
 val unusedWarnings = Seq("-Ywarn-unused")
 
 val crossScalaVersionSettings = Def.settings(
-  crossScalaVersions := Seq(Scala211, Scala212, Scala213)
+  crossScalaVersions := Seq(Scala212, Scala213)
 )
 
 lazy val core = project
@@ -103,7 +102,7 @@ commonSettings
 crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
-  scalikejdbcVersion := "3.4.2",
+  scalikejdbcVersion := "3.5.0",
   unmanagedResources in Compile += (baseDirectory in LocalRootProject).value / "LICENSE.txt",
   scalaVersion := Scala212,
   scalacOptions ++= unusedWarnings,
