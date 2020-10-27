@@ -7,7 +7,7 @@ val Scala212 = "2.12.12"
 val Scala213 = "2.13.3"
 
 val scalikejdbcVersion = settingKey[String]("")
-val wartremoverVersion = "2.4.10"
+val wartremoverVersion = "2.4.11"
 
 val projectName = "wartremover-scalikejdbc"
 
