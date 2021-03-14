@@ -15,7 +15,7 @@ jobs:
       with:
         java-version: "adopt@1.8"
     - uses: coursier/cache-action@v5
-    - run: sbt "onFailure +test:compile" "+test:compile"
+    - run: sbt "onFailure Test/compile" "+ Test/compile"
     - run: sbt
            "scalafmtCheck"
            "scalafmtCheckAll"
