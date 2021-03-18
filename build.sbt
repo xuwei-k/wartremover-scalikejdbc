@@ -44,7 +44,7 @@ val updateReadmeTask = { state: State =>
 val updateReadmeProcess: ReleaseStep = updateReadmeTask
 
 val tagName = Def.setting {
-  s"v${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}"
+  s"v${if (releaseUseGlobalVersion.value) (ThisBuild / version).value else version.value}"
 }
 
 val tagOrHash = Def.setting {
@@ -89,12 +89,12 @@ lazy val tests = project
   )
 
 lazy val noPublish = Def.settings(
-  skip in publish := true,
+  publish / skip := true,
   PgpKeys.publishLocalSigned := {},
   PgpKeys.publishSigned := {},
   publishLocal := {},
   publish := {},
-  publishArtifact in Compile := false
+  Compile / publishArtifact := false
 )
 
 noPublish
@@ -103,10 +103,10 @@ crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
   scalikejdbcVersion := "3.5.0",
-  unmanagedResources in Compile += (baseDirectory in LocalRootProject).value / "LICENSE.txt",
+  (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalaVersion := Scala212,
   scalacOptions ++= unusedWarnings,
-  Seq(Compile, Test).flatMap(c => scalacOptions in (c, console) --= unusedWarnings),
+  Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings),
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
@@ -115,7 +115,7 @@ lazy val commonSettings = Def.settings(
   description := "warts for scalikejdbc",
   licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
   organization := "com.github.xuwei-k",
-  pomExtra in Global := {
+  (Global / pomExtra) := {
     <url>https://github.com/xuwei-k/wartremover-scalikejdbc</url>
       <scm>
         <connection>scm:git:github.com/xuwei-k/wartremover-scalikejdbc.git</connection>
@@ -132,11 +132,11 @@ lazy val commonSettings = Def.settings(
       </developers>
   },
   publishTo := sonatypePublishToBundle.value,
-  scalacOptions in (Compile, doc) ++= {
+  (Compile / doc / scalacOptions) ++= {
     val t = tagOrHash.value
     Seq(
       "-sourcepath",
-      (baseDirectory in LocalRootProject).value.getAbsolutePath,
+      (LocalRootProject / baseDirectory).value.getAbsolutePath,
       "-doc-source-url",
       s"https://github.com/xuwei-k/wartremover-scalikejdbc/tree/${t}€{FILE_PATH}.scala"
     )
@@ -155,7 +155,7 @@ lazy val commonSettings = Def.settings(
     ReleaseStep(
       action = { state =>
         val extracted = Project extract state
-        extracted.runAggregated(PgpKeys.publishSigned in Global in extracted.get(thisProjectRef), state)
+        extracted.runAggregated(extracted.get(thisProjectRef) / (Global / PgpKeys.publishSigned), state)
       },
       enableCrossBuild = true
     ),
