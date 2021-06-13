@@ -102,7 +102,7 @@ commonSettings
 crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
-  scalikejdbcVersion := "3.5.0",
+  scalikejdbcVersion := "4.0.0-RC1",
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalaVersion := Scala212,
   scalacOptions ++= unusedWarnings,
