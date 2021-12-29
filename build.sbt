@@ -65,7 +65,7 @@ lazy val core = project
     crossScalaVersionSettings,
     libraryDependencies ++= Seq(
       "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test",
-      "com.github.sbt" % "junit-interface" % "0.13.2" % "test",
+      "com.github.sbt" % "junit-interface" % "0.13.3" % "test",
       "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.full,
     ),
     commonSettings,
