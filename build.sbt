@@ -105,6 +105,7 @@ lazy val commonSettings = Def.settings(
   scalikejdbcVersion := "4.0.0",
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalaVersion := Scala212,
+  addCommandAlias("SetScala212", s"""++ ${Scala212}! -v"""),
   scalacOptions ++= unusedWarnings,
   Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings),
   scalacOptions ++= Seq(
