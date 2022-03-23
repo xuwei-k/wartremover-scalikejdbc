@@ -4,10 +4,9 @@ import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
 
 val Scala212 = "2.12.15"
-val Scala213 = "2.13.8"
 
 val scalikejdbcVersion = settingKey[String]("")
-val wartremoverVersion = "2.4.19"
+val wartremoverVersion = "3.0.0-RC2"
 
 val projectName = "wartremover-scalikejdbc"
 
@@ -55,7 +54,7 @@ val tagOrHash = Def.setting {
 val unusedWarnings = Seq("-Ywarn-unused")
 
 val crossScalaVersionSettings = Def.settings(
-  crossScalaVersions := Seq(Scala212, Scala213)
+  crossScalaVersions := Seq(Scala212, "2.13.8", "3.1.1")
 )
 
 lazy val core = project
@@ -63,8 +62,14 @@ lazy val core = project
   .settings(
     name := projectName,
     crossScalaVersionSettings,
+    libraryDependencies += {
+      if (scalaBinaryVersion.value == "3") {
+        "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value
+      } else {
+        "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test"
+      }
+    },
     libraryDependencies ++= Seq(
-      "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test",
       "com.github.sbt" % "junit-interface" % "0.13.3" % "test",
       "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.full,
     ),
