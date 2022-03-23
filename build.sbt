@@ -111,7 +111,13 @@ lazy val commonSettings = Def.settings(
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalaVersion := Scala212,
   addCommandAlias("SetScala212", s"""++ ${Scala212}! -v"""),
-  scalacOptions ++= unusedWarnings,
+  scalacOptions ++= {
+    if (scalaBinaryVersion.value != "3") {
+      unusedWarnings
+    } else {
+      Nil
+    }
+  },
   Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings),
   scalacOptions ++= Seq(
     "-feature",
