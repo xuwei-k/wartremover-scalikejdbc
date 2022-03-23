@@ -22,5 +22,5 @@ jobs:
            "scalafmtCheckAll"
            "+test"
            "+core/publishLocal"
-           "++2.12.12"
+           SetScala212
            "tests/scripted"
