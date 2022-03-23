@@ -6,5 +6,5 @@
 ## [example](example/test/basic/build.sbt)
 
 ```scala
-wartremoverDependencies += "com.github.xuwei-k" %% "wartremover-scalikejdbc" % "0.3.0"
+wartremoverDependencies += "com.github.xuwei-k" %% "wartremover-scalikejdbc" % "0.5.0"
 ```
