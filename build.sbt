@@ -54,7 +54,7 @@ val tagOrHash = Def.setting {
 val unusedWarnings = Seq("-Ywarn-unused")
 
 val crossScalaVersionSettings = Def.settings(
-  crossScalaVersions := Seq(Scala212, "2.13.8", "3.1.2")
+  crossScalaVersions := Seq(Scala212, "2.13.8", "3.1.3")
 )
 
 lazy val core = project
