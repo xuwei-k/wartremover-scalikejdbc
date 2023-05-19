@@ -6,7 +6,7 @@ import sbtrelease.Git
 val Scala212 = "2.12.17"
 
 val scalikejdbcVersion = settingKey[String]("")
-val wartremoverVersion = "3.1.2"
+val wartremoverVersion = "3.1.3"
 
 val projectName = "wartremover-scalikejdbc"
 
