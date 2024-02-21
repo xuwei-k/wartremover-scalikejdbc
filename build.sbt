@@ -3,7 +3,7 @@ import java.lang.management.ManagementFactory
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
 
-val Scala212 = "2.12.18"
+val Scala212 = "2.12.19"
 
 val scalikejdbcVersion = settingKey[String]("")
 val wartremoverVersion = "3.1.6"
