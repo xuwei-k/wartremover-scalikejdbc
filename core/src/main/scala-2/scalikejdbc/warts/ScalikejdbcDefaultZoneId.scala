@@ -5,7 +5,7 @@ import org.wartremover._
 /**
  * avoid `ZoneId.systemDefault`
  *
- * [[https://github.com/scalikejdbc/scalikejdbc/blob/4.3.1/scalikejdbc-core/src/main/scala/scalikejdbc/TypeBinder.scala#L147-L156]]
+ * [[https://github.com/scalikejdbc/scalikejdbc/blob/4.3.2/scalikejdbc-core/src/main/scala/scalikejdbc/TypeBinder.scala#L147-L156]]
  */
 object ScalikejdbcDefaultZoneId extends WartTraverser {
   def apply(u: WartUniverse): u.Traverser = {
