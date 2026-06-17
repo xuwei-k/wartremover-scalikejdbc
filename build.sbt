@@ -129,19 +129,19 @@ lazy val commonSettings = Def.settings(
   organization := "com.github.xuwei-k",
   (Global / pomExtra) := {
     <url>https://github.com/xuwei-k/wartremover-scalikejdbc</url>
-      <scm>
-        <connection>scm:git:github.com/xuwei-k/wartremover-scalikejdbc.git</connection>
-        <developerConnection>scm:git:git@github.com:xuwei-k/wartremover-scalikejdbc.git</developerConnection>
-        <url>github.com/xuwei-k/wartremover-scalikejdbc.git</url>
-        <tag>{tagOrHash.value}</tag>
-      </scm>
-      <developers>
-        <developer>
-          <id>xuwei-k</id>
-          <name>Kenji Yoshida</name>
-          <url>https://github.com/xuwei-k</url>
-        </developer>
-      </developers>
+    <scm>
+      <connection>scm:git:github.com/xuwei-k/wartremover-scalikejdbc.git</connection>
+      <developerConnection>scm:git:git@github.com:xuwei-k/wartremover-scalikejdbc.git</developerConnection>
+      <url>github.com/xuwei-k/wartremover-scalikejdbc.git</url>
+      <tag>{tagOrHash.value}</tag>
+    </scm>
+    <developers>
+      <developer>
+        <id>xuwei-k</id>
+        <name>Kenji Yoshida</name>
+        <url>https://github.com/xuwei-k</url>
+      </developer>
+    </developers>
   },
   publishTo := sonatypePublishToBundle.value,
   (Compile / doc / scalacOptions) ++= {
