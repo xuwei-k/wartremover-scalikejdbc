@@ -5,7 +5,7 @@ import sbtrelease.Git
 
 val Scala212 = "2.12.21"
 
-val scalikejdbcVersion = settingKey[String]("")
+val scalikejdbcVersion = "4.3.5"
 val wartremoverVersion = "3.5.8"
 
 val projectName = "wartremover-scalikejdbc"
@@ -64,9 +64,9 @@ lazy val core = project
     crossScalaVersionSettings,
     libraryDependencies += {
       if (scalaBinaryVersion.value == "3") {
-        "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value
+        "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion
       } else {
-        "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion.value % "test"
+        "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion % "test"
       }
     },
     libraryDependencies ++= Seq(
@@ -87,7 +87,7 @@ lazy val tests = project
     scriptedLaunchOpts ++= ManagementFactory.getRuntimeMXBean.getInputArguments.asScala.toList
       .filter(a => Seq("-Xmx", "-Xms", "-XX", "-Dsbt.log.noformat").exists(a.startsWith)),
     scriptedLaunchOpts ++= Seq(
-      s"-Dscalikejdbc.version=${scalikejdbcVersion.value}",
+      s"-Dscalikejdbc.version=${scalikejdbcVersion}",
       s"-Dwartremover.version=${wartremoverVersion}",
       s"-Dwartremover-scalikejdbc.version=${version.value}"
     ),
@@ -107,7 +107,6 @@ commonSettings
 crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
-  scalikejdbcVersion := "4.3.5",
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalaVersion := Scala212,
   addCommandAlias("SetScala212", s"""++ ${Scala212}! -v"""),
