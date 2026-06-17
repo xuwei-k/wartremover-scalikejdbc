@@ -50,7 +50,14 @@ val tagOrHash = Def.setting {
   else tagName.value
 }
 
-val unusedWarnings = Seq("-Ywarn-unused")
+val unusedWarnings = Def.setting(
+  scalaBinaryVersion.value match {
+    case "2.12" =>
+      Seq("-Ywarn-unused")
+    case "2.13" | "3" =>
+      Seq("-Wunused:imports")
+  }
+)
 
 val crossScalaVersionSettings = Def.settings(
   crossScalaVersions := Seq(Scala212, "2.13.18", "3.3.8")
@@ -109,14 +116,8 @@ lazy val commonSettings = Def.settings(
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalaVersion := Scala212,
   addCommandAlias("SetScala212", s"""++ ${Scala212}! -v"""),
-  scalacOptions ++= {
-    if (scalaBinaryVersion.value != "3") {
-      unusedWarnings
-    } else {
-      Nil
-    }
-  },
-  Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings),
+  scalacOptions ++= unusedWarnings.value,
+  Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings.value),
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
