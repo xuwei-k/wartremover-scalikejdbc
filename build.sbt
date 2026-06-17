@@ -71,7 +71,7 @@ lazy val core = project
     },
     libraryDependencies ++= Seq(
       "com.github.sbt" % "junit-interface" % "0.13.3" % "test",
-      "org.wartremover" %% "wartremover" % wartremoverVersion cross CrossVersion.full,
+      "org.wartremover" %% "wartremover" % wartremoverVersion,
     ),
     commonSettings,
   )
