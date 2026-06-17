@@ -143,7 +143,7 @@ lazy val commonSettings = Def.settings(
         </developer>
       </developers>
   },
-  publishTo := sonatypePublishToBundle.value,
+  publishTo := (if (isSnapshot.value) None else localStaging.value),
   (Compile / doc / scalacOptions) ++= {
     val t = tagOrHash.value
     Seq(
@@ -171,7 +171,7 @@ lazy val commonSettings = Def.settings(
       },
       enableCrossBuild = true
     ),
-    releaseStepCommand("sonatypeBundleRelease"),
+    releaseStepCommand("sonaRelease"),
     setNextVersion,
     commitNextVersion,
     updateReadmeProcess,
