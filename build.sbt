@@ -145,12 +145,20 @@ lazy val commonSettings = Def.settings(
   publishTo := (if (isSnapshot.value) None else localStaging.value),
   (Compile / doc / scalacOptions) ++= {
     val t = tagOrHash.value
-    Seq(
-      "-sourcepath",
-      (LocalRootProject / baseDirectory).value.getAbsolutePath,
-      "-doc-source-url",
-      s"https://github.com/xuwei-k/wartremover-scalikejdbc/tree/${t}€{FILE_PATH}.scala"
-    )
+    if (scalaBinaryVersion.value == "3") {
+      Seq(
+        "-source-links:github://xuwei-k/wartremover-scalikejdbc",
+        "-revision",
+        t
+      )
+    } else {
+      Seq(
+        "-sourcepath",
+        (LocalRootProject / baseDirectory).value.getAbsolutePath,
+        "-doc-source-url",
+        s"https://github.com/xuwei-k/wartremover-scalikejdbc/tree/${t}€{FILE_PATH}.scala"
+      )
+    }
   },
   ReleasePlugin.extraReleaseCommands,
   commands += Command.command("updateReadme")(updateReadmeTask),
