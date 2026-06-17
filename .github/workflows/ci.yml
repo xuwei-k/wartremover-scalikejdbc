@@ -21,14 +21,8 @@ jobs:
     - run: sbt
            -v
            --server
-           "onFailure Test/compile"
-           "+ Test/compile"
-    - run: sbt
-           -v
-           --server
-           "scalafmtCheck"
-           "scalafmtCheckAll"
-           "+test"
-           "+core/publishLocal"
-           SetScala212
-           "tests/scripted"
+           scalafmtSbtCheck
+           scalafmtCheckAll
+           test
+           publishLocal
+           scripted
