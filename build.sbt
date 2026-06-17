@@ -59,15 +59,12 @@ val unusedWarnings = Def.setting(
   }
 )
 
-val crossScalaVersionSettings = Def.settings(
-  crossScalaVersions := Seq(Scala212, "2.13.18", "3.3.8")
-)
-
-lazy val core = project
+lazy val core = projectMatrix
   .in(file("core"))
+  .defaultAxes(VirtualAxis.jvm)
+  .jvmPlatform(scalaVersions = Seq(Scala212, "2.13.18", "3.3.8"))
   .settings(
     name := projectName,
-    crossScalaVersionSettings,
     libraryDependencies += {
       if (scalaBinaryVersion.value == "3") {
         "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion
@@ -110,12 +107,9 @@ lazy val noPublish = Def.settings(
 
 noPublish
 commonSettings
-crossScalaVersionSettings
 
 lazy val commonSettings = Def.settings(
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
-  scalaVersion := Scala212,
-  addCommandAlias("SetScala212", s"""++ ${Scala212}! -v"""),
   scalacOptions ++= unusedWarnings.value,
   Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings.value),
   scalacOptions ++= Seq(
@@ -163,7 +157,6 @@ lazy val commonSettings = Def.settings(
   ReleasePlugin.extraReleaseCommands,
   commands += Command.command("updateReadme")(updateReadmeTask),
   releaseTagName := tagName.value,
-  releaseCrossBuild := true,
   releaseProcess := Seq[ReleaseStep](
     inquireVersions,
     runClean,
@@ -171,14 +164,8 @@ lazy val commonSettings = Def.settings(
     commitReleaseVersion,
     updateReadmeProcess,
     tagRelease,
-    ReleaseStep(
-      action = { state =>
-        val extracted = Project.extract(state)
-        extracted.runAggregated(extracted.get(thisProjectRef) / (Global / PgpKeys.publishSigned), state)
-      },
-      enableCrossBuild = true
-    ),
-    releaseStepCommand("sonaRelease"),
+    releaseStepCommandAndRemaining("publishSigned"),
+    releaseStepCommandAndRemaining("sonaRelease"),
     setNextVersion,
     commitNextVersion,
     updateReadmeProcess,
