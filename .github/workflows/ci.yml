@@ -18,8 +18,14 @@ jobs:
         distribution: temurin
     - uses: coursier/cache-action@v8
     - uses: sbt/setup-sbt@v1
-    - run: sbt "onFailure Test/compile" "+ Test/compile"
     - run: sbt
+           -v
+           --server
+           "onFailure Test/compile"
+           "+ Test/compile"
+    - run: sbt
+           -v
+           --server
            "scalafmtCheck"
            "scalafmtCheckAll"
            "+test"
