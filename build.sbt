@@ -111,6 +111,19 @@ commonSettings
 lazy val commonSettings = Def.settings(
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
   scalacOptions ++= unusedWarnings.value,
+  scalacOptions ++= {
+    scalaBinaryVersion.value match {
+      case "2.12" | "2.13" =>
+        Seq("-release:8")
+      case _ if scalaVersion.value.startsWith("3.3.") =>
+        Seq(
+          "-release:11",
+          "-Yfuture-lazy-vals",
+        )
+      case _ =>
+        Nil
+    }
+  },
   Seq(Compile, Test).flatMap(c => c / console / scalacOptions --= unusedWarnings.value),
   scalacOptions ++= Seq(
     "-feature",
