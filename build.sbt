@@ -23,9 +23,9 @@ val updateReadmeTask = { (state: State) =>
     IO.readLines(readmeFile)
       .map { line =>
         val matchReleaseOrSnapshot = line.contains("SNAPSHOT") == v.contains("SNAPSHOT")
-        if (line.startsWith("libraryDependencies") && matchReleaseOrSnapshot) {
+        if (line.startsWith("wartremoverDependencies") && matchReleaseOrSnapshot) {
           val i = modules.map("\"" + _ + "\"").indexWhere(line.contains)
-          s"""libraryDependencies += "$org" %% "${modules(i)}" % "$v""""
+          s"""wartremoverDependencies += "$org" %% "${modules(i)}" % "$v""""
         } else {
           line
         }
