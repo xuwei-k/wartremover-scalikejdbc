@@ -1,4 +1,4 @@
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import java.lang.management.ManagementFactory
 import sbtrelease.ReleaseStateTransformations._
 import sbtrelease.Git
@@ -9,8 +9,6 @@ val scalikejdbcVersion = "4.3.5"
 val wartremoverVersion = "3.6.0"
 
 val projectName = "wartremover-scalikejdbc"
-
-Global / onChangedBuildSource := ReloadOnSourceChanges
 
 val updateReadmeTask = { (state: State) =>
   val extracted = Project.extract(state)
@@ -46,7 +44,7 @@ val tagName = Def.setting {
 }
 
 val tagOrHash = Def.setting {
-  if (isSnapshot.value) sys.process.Process("git rev-parse HEAD").lineStream_!.head
+  if (isSnapshot.value) sys.process.Process("git rev-parse HEAD").lazyLines_!.head
   else tagName.value
 }
 
@@ -105,8 +103,10 @@ lazy val noPublish = Def.settings(
   Compile / publishArtifact := false
 )
 
-noPublish
-commonSettings
+lazy val wartremoverScalikejdbcRoot = rootProject.autoAggregate.settings(
+  noPublish,
+  commonSettings,
+)
 
 lazy val commonSettings = Def.settings(
   (Compile / unmanagedResources) += (LocalRootProject / baseDirectory).value / "LICENSE.txt",
