@@ -60,7 +60,7 @@ val unusedWarnings = Def.setting(
 lazy val core = projectMatrix
   .in(file("core"))
   .defaultAxes(VirtualAxis.jvm)
-  .jvmPlatform(scalaVersions = Seq(Scala212, "2.13.18", "3.3.8"))
+  .jvmPlatform(scalaVersions = Seq(Scala212, "3.9.0", "3.3.8"))
   .settings(
     name := projectName,
     libraryDependencies += {
