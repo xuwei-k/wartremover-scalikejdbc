@@ -131,7 +131,7 @@ lazy val commonSettings = Def.settings(
     "-language:existentials",
   ),
   description := "warts for scalikejdbc",
-  licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
+  licenses += ("MIT", uri("https://opensource.org/licenses/MIT")),
   organization := "com.github.xuwei-k",
   (Global / pomExtra) := {
     <url>https://github.com/xuwei-k/wartremover-scalikejdbc</url>
